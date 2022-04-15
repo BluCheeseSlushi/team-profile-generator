@@ -10,5 +10,5 @@ test('Creates new employee', () => {
     expect(employee.getName()).toEqual({"name": "jeff"});
     expect(employee.getId()).toEqual({"id": 3});
     expect(employee.getEmail()).toEqual({"email": "jeff@mail"});
-    expect(employee.getRole()).toEqual({"role": "Employee"});
+    expect(employee.getRole()).toEqual("Employee");
 });

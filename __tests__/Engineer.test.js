@@ -12,4 +12,5 @@ test('Creates new engineer', () => {
     expect(engineer.getId()).toEqual({"id": 3});
     expect(engineer.getEmail()).toEqual({"email": "jeff@mail"});
     expect(engineer.getRole()).toEqual("Engineer");
+    expect(engineer.getGithub()).toEqual("jeff420");
 });
