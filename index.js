@@ -4,12 +4,12 @@ const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/Intern');
-const { generateKey } = require('crypto');
+const generatePage = require('./src/pageTemplate')
 global.idNum = 1;
 const teamMembers = [];
 
 
-function teamBuilder(teamMembers) {
+function teamBuilder() {
     return inquirer.prompt([{
       type: 'input',
       name: 'name',
@@ -54,21 +54,23 @@ function teamBuilder(teamMembers) {
     }])
     .then(answers => {
       let manager = new Manager(answers.name, answers.email, global.idNum, answers.office)
-      global.idNum = global.idNum + 1
+    //   console.log(manager);
+    //   console.log(teamMembers);
       teamMembers.push(manager);
-      console.log(manager);
+      global.idNum = global.idNum + 1
       return manager;
     })
 };
 
 function confirmAdd() {
-  inquirer.prompt({
+  inquirer.prompt([{
     type: 'checkbox',
     name: 'confirmAdd',
     message: 'Would you like to add a team member?',
     choices: ['Engineer', 'Intern', 'no']
-  })
+  }])
   .then(answers => {
+      console.log('question skiped');
     if (answers.confirmAdd == 'Engineer') {
       console.log('Engineer');
         inquirer.prompt([{
@@ -171,13 +173,17 @@ function confirmAdd() {
     });
     } else {
       console.log(teamMembers)
-      return teamMembers
+      generatePage(teamMembers);
+    //   return teamMembers
     }
   })
 }
 
 teamBuilder()
   .then(confirmAdd)
-  .then(teamMembers => {
-    generatePage(teamMembers);
-  })
+//   .then(team => {
+//     generatePage(team);
+//   })
+//   .then(pageData => {
+//       console.log(pageData)
+//   })

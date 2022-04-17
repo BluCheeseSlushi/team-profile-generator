@@ -1,65 +1,25 @@
-let teamMembers = [
-    {
-      name: 'qgrae',
-      email: 'qerga',
-      id: 2,
-      role: 'Engineer',
-      username: 'qgrae'
-    },
-    {
-      name: 'wge5ra',
-      email: 'qegra',
-      id: 3,
-      role: 'Intern',
-      school: 'qgraev'
-    }
-  ]
+const fs = require('fs');
+const { resolve } = require('path');
+
+const createPage = fileContent => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('./dist/index.html', fileContent, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'file created'
+            });
+        });
+    });
+};
 
 
-const generateCards = teamMembers => {
-    for (let i = 0; i < teamMembers.length; i++) {
-        if (teamMembers[i].role == 'Manager') {
-            return `
-            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">${teamMembers[i].role}</div>
-                <div class="card-body">
-                    <h5 class="card-title">${teamMembers[i].name}</h5>
-                    <p class="card-text">ID: ${teamMembers[i].id}</p>
-                    <a href="${teamMembers[i].email}">${teamMembers[i].email}</a>
-                    <p>${teamMembers[i].office}</p>
-                </div>
-            </div>
-            `
-        } else if (teamMembers[i].role == 'Engineer') {
-            return `
-            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">${teamMembers[i].role}</div>
-                <div class="card-body">
-                    <h5 class="card-title">${teamMembers[i].name}</h5>
-                    <p class="card-text">ID: ${teamMembers[i].id}</p>
-                    <a href="${teamMembers[i].email}">${teamMembers[i].email}</a>
-                    <a href="${teamMembers[i].username}">${teamMembers[i].username}</a>
-                </div>
-            </div>
-            `
-        } else {
-            return `
-            <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                <div class="card-header">${teamMembers[i].role}</div>
-                <div class="card-body">
-                    <h5 class="card-title">${teamMembers[i].name}</h5>
-                    <p class="card-text">ID: ${teamMembers[i].id}</p>
-                    <a href="${teamMembers[i].email}">${teamMembers[i].email}</a>
-                    <p>${teamMembers[i].school}</p>
-                </div>
-            </div>
-            `
-        }
-    }
-}
-
-const generatePage = teamMembers => {
-    console.log( `
+module.exports = teamMembers => {
+    console.log('pageTemplate called')
+    let pageData = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -75,11 +35,61 @@ const generatePage = teamMembers => {
         </div>
         
         <div class="container-fluid">
+            <div class="row justify-content-between">
             ${generateCards(teamMembers)}
+            </div>
         </div>
     </body>
     </html>
-    `)
+    `
+    console.log(pageData)
+    // return pageData
+    createPage(pageData)
 }
 
-generatePage(teamMembers);
+const generateCards = team => {
+    const cards = [];
+    for (let i = 0; i < team.length; i++) {
+        if (team[i].role == 'Manager') {
+            cards.push(`
+            <div class="card text-white bg-danger mb-3 p-2" style="max-width: 18rem;">
+                <div class="card-header">${team[i].role}</div>
+                <div class="card-body">
+                    <h5 class="card-title">${team[i].name}</h5>
+                    <p class="card-text">ID: ${team[i].id}</p>
+                    <a class="card-text" href="mailto:${team[i].email}">${team[i].email}</a>
+                    <p class="card-text">Office Number${team[i].office}</p>
+                </div>
+            </div>
+            `)
+        } else if (team[i].role == 'Engineer') {
+            cards.push(`
+            <div class="card text-white bg-danger mb-3 p-2" style="max-width: 18rem;">
+                <div class="card-header">${team[i].role}</div>
+                <div class="card-body">
+                    <h5 class="card-title">${team[i].name}</h5>
+                    <p class="card-text">ID: ${team[i].id}</p>
+                    <a class="card-text" href="mailto:${team[i].email}">${team[i].email}</a>
+                    <a class="card-text" href="${team[i].username}">${team[i].username}</a>
+                </div>
+            </div>
+            `)
+        } else {
+            cards.push(`
+            <div class="card text-white bg-danger mb-3 p-2" style="max-width: 18rem;">
+                <div class="card-header">${team[i].role}</div>
+                <div class="card-body">
+                    <h5 class="card-title">${team[i].name}</h5>
+                    <p class="card-text">ID: ${team[i].id}</p>
+                    <a class="card-text" href="mailto:${team[i].email}">${team[i].email}</a>
+                    <p class="card-text" >${team[i].school}</p>
+                </div>
+            </div>
+            `)
+        }
+    }
+    // console.log(cards)
+    return cards
+}
+
+// module.exports = generatePage();
