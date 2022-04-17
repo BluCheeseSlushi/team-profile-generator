@@ -58,7 +58,7 @@ const generateCards = team => {
                     <h5 class="card-title">${team[i].name}</h5>
                     <p class="card-text">ID: ${team[i].id}</p>
                     <a class="card-text" href="mailto:${team[i].email}">${team[i].email}</a>
-                    <p class="card-text">Office Number${team[i].office}</p>
+                    <p class="card-text">Office Number: ${team[i].office}</p>
                 </div>
             </div>
             `)
@@ -70,7 +70,7 @@ const generateCards = team => {
                     <h5 class="card-title">${team[i].name}</h5>
                     <p class="card-text">ID: ${team[i].id}</p>
                     <a class="card-text" href="mailto:${team[i].email}">${team[i].email}</a>
-                    <a class="card-text" href="${team[i].username}">${team[i].username}</a>
+                    <a class="card-text" target="_blank" href="https://github.com/${team[i].username}">${team[i].username}</a>
                 </div>
             </div>
             `)
@@ -82,14 +82,12 @@ const generateCards = team => {
                     <h5 class="card-title">${team[i].name}</h5>
                     <p class="card-text">ID: ${team[i].id}</p>
                     <a class="card-text" href="mailto:${team[i].email}">${team[i].email}</a>
-                    <p class="card-text" >${team[i].school}</p>
+                    <p class="card-text" >School: ${team[i].school}</p>
                 </div>
             </div>
             `)
         }
     }
-    // console.log(cards)
+    
     return cards
 }
-
-// module.exports = generatePage();
