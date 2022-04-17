@@ -1,14 +1,15 @@
+// Calling the resoures with require
 const inquirer = require('inquirer');
 const Choices = require('inquirer/lib/objects/choices');
-const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/Intern');
 const generatePage = require('./src/pageTemplate')
+// Setting variables
 global.idNum = 1;
 const teamMembers = [];
 
-
+// This function builds a manager to start the app
 function teamBuilder() {
     return inquirer.prompt([{
       type: 'input',
@@ -53,15 +54,15 @@ function teamBuilder() {
         }  
     }])
     .then(answers => {
+        // Builds a manager using the answers and a global variable as the id
       let manager = new Manager(answers.name, answers.email, global.idNum, answers.office)
-    //   console.log(manager);
-    //   console.log(teamMembers);
       teamMembers.push(manager);
       global.idNum = global.idNum + 1
       return manager;
     })
 };
 
+// This function adds team members to an array and calls itself to cylce through multiple times
 function confirmAdd() {
   inquirer.prompt([{
     type: 'checkbox',
@@ -70,7 +71,6 @@ function confirmAdd() {
     choices: ['Engineer', 'Intern', 'no']
   }])
   .then(answers => {
-      console.log('question skiped');
     if (answers.confirmAdd == 'Engineer') {
       console.log('Engineer');
         inquirer.prompt([{
@@ -117,7 +117,6 @@ function confirmAdd() {
     .then(answers => {
       let newTeamMember = new Engineer(answers.name, answers.email, id = global.idNum, answers.username)
       global.idNum = global.idNum + 1
-      console.log(newTeamMember);
       teamMembers.push(newTeamMember);
       confirmAdd();
     });
@@ -167,23 +166,15 @@ function confirmAdd() {
     .then(answers => {
       let newTeamMember = new Intern(answers.name, answers.email, id = global.idNum, answers.school)
       global.idNum = global.idNum + 1
-      console.log(newTeamMember);
       teamMembers.push(newTeamMember);
       confirmAdd();
     });
     } else {
-      console.log(teamMembers)
+        // Sends the team data to page template
       generatePage(teamMembers);
-    //   return teamMembers
     }
   })
 }
-
+// Calls the first function and then asks to added team members
 teamBuilder()
   .then(confirmAdd)
-//   .then(team => {
-//     generatePage(team);
-//   })
-//   .then(pageData => {
-//       console.log(pageData)
-//   })

@@ -1,6 +1,8 @@
+// Calling the resoures with require
 const fs = require('fs');
 const { resolve } = require('path');
 
+// Uses file system to create index.html in the dist folder
 const createPage = fileContent => {
     return new Promise((resolve, reject) => {
         fs.writeFile('./dist/index.html', fileContent, err => {
@@ -16,9 +18,8 @@ const createPage = fileContent => {
     });
 };
 
-
+// Uses the teamMembers array to generate the page data
 module.exports = teamMembers => {
-    console.log('pageTemplate called')
     let pageData = `
     <!DOCTYPE html>
     <html lang="en">
@@ -34,7 +35,7 @@ module.exports = teamMembers => {
             <header class="text-light m-5 fs-1">My Team</header>
         </div>
         
-        <div class="container-fluid">
+        <div class="container-fluid p-5">
             <div class="row justify-content-between">
             ${generateCards(teamMembers)}
             </div>
@@ -46,7 +47,7 @@ module.exports = teamMembers => {
     // return pageData
     createPage(pageData)
 }
-
+// Makes a card for each team member
 const generateCards = team => {
     const cards = [];
     for (let i = 0; i < team.length; i++) {
